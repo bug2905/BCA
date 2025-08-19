@@ -3,6 +3,6 @@ import qrcode
 data = "kushal shah"
 
 qr = qrcode.make(data)
-qr.save("qrcode.png")
+qr.save(f"E:/kushal/git/BCA/miniprojects/{data}.png")
 
 print("qr code generated")
