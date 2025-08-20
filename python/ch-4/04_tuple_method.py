@@ -1,0 +1,7 @@
+a = (1,23,35,35,"rohan","kushal",False,True)
+print(a)
+no = a.count(35)
+print(no)
+i = a.index(23)
+print(i)
+print(len(a))
