@@ -5,7 +5,7 @@ def click(event):
     global expression
     text = event.widget.cget("text")
     
-    if text == "=":
+    if text == "=": 
         try:
             result = eval(expression)
             entry_var.set(result)
