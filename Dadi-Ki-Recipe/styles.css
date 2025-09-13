@@ -1,0 +1,63 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff3e0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #ff9800;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+.recipe {
+    margin-bottom: 20px;
+}
+
+.recipe img {
+    width: 200px; /* Set a consistent width for all images */
+    height: 150px; /* Set a consistent height for all images */
+    object-fit: cover; /* Ensures the aspect ratio is maintained */
+}
+
+
+footer {
+    background-color: #ff9800;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.social-media a {
+    margin: 0 10px;
+    color: white;
+    text-decoration: none;
+}
+
