@@ -15,7 +15,7 @@ const interval = setInterval(() => {
   const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
   const minutes = Math.floor((distance / (1000 * 60)) % 60);
   const seconds = Math.floor((distance / 1000) % 60);
-  countdown.innerHTML = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until her birthday!`;
+  countdown.innerHTML = `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s Until Your Birthday!`;
 }, 1000);
 
 // Music Toggle
