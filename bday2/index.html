@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday, Falguni 🌻</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Confetti Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  // Run confetti when page loads
+  window.onload = function() {
+    // Burst of confetti
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 }
+    });
+
+    // Optional: repeat a few times for longer effect
+    let duration = 3 * 1000; // 3 seconds
+    let end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 }
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 }
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  };
+</script>
+
+  <audio id="bg-music" loop>
+    <source src="assets/music/happy-birthday.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="sunflower"></div>
+    <h1>Happy Birthday, Falguni 🌻</h1>
+    <p>To our sunshine, Noor ✨</p>
+    <button onclick="toggleMusic()">🎵 Toggle Music</button>
+    <div id="countdown"></div>
+  </section>
+
+  <!-- Poetry Section -->
+  <section class="poetry">
+    <h2 style="color: rgb(224, 138, 11);">Words for Noor</h2>
+    <div class="poem-card">
+      <h3>"To the Light You Are"</h3>
+      <p>Thank You For Being My Safe Space,<br>Thank You For Listening To My Problems ,<br>Even When You Had Your Owns,<br>Keep Smiling Always,<br>Just like your favorite—sunny yellow.</p>
+      <p class="signature">– With love, Always</p>
+    </div>
+    <form id="wish-form">
+      <h3>Leave Your Wish</h3>
+      <input type="text" id="name" placeholder="Your Name" required>
+      <textarea id="wish" placeholder="Your Birthday Message..." required></textarea>
+      <button type="submit">Send Wish</button>
+    </form>
+    <div id="wish-board"></div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery">
+    <h2>Memories Together</h2>
+    <div class="gallery-grid">
+      <img src="assets/images/photo1.jpg" alt="Beach Day" onclick="openLightbox(this)">
+      <img src="assets/images/photo2.jpg" alt="Laughs in the Park" onclick="openLightbox(this)">
+      <img src="assets/images/photo3.jpg" alt="Beach Day" onclick="openLightbox(this)">
+      <img src="assets/images/photo4.jpg" alt="Laughs in the Park" onclick="openLightbox(this)">
+      <img src="assets/images/photo5.jpg" alt="Beach Day" onclick="openLightbox(this)">
+      <img src="assets/images/photo6.jpg" alt="Laughs in the Park" onclick="openLightbox(this)">
+      <img src="assets/images/photo7.jpg" alt="Beach Day" onclick="openLightbox(this)">
+      <!-- <img src="assets/images/photo2.jpg" alt="Laughs in the Park" onclick="openLightbox(this)"> -->
+      
+      <!-- Add more images as needed -->
+    </div>
+    <div id="lightbox" onclick="closeLightbox()">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with ❤️ for Noor | </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

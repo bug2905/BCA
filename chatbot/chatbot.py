@@ -15,17 +15,32 @@ embeddings = data["embeddings"]
 
 # Load models
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
-qa_model = pipeline("text2text-generation", model="google/flan-t5-base")  # better than small
+qa_model = pipeline("text2text-generation", model="google/flan-t5-base")
+
+# Predefined chit-chat responses
+smalltalk_responses = {
+    "hi": "Hello! 👋 How can I help you today?",
+    "hello": "Hi there! 😊 What would you like to know?",
+    "hey": "Hey! 🙌 Ask me anything.",
+    "how are you": "I’m just a bot, but I’m doing great! Thanks for asking. How are you?",
+    "who are you": "I’m your friendly chatbot assistant. 🤖",
+    "bye": "Goodbye! 👋 Have a great day!"
+}
 
 def answer_question(question):
-    # Find most similar text chunks
+    # Check for small-talk (lowercase matching)
+    q_lower = question.lower().strip()
+    for key, reply in smalltalk_responses.items():
+        if key in q_lower:
+            return reply
+
+    # Otherwise → knowledge-based answer
     q_emb = embedder.encode(question, convert_to_tensor=True)
-    hits = util.semantic_search(q_emb, embeddings, top_k=5)  # retrieve top 5
+    hits = util.semantic_search(q_emb, embeddings, top_k=5)
     context = " ".join([texts[hit['corpus_id']] for hit in hits[0]])
 
-    # Generate answer
     result = qa_model(
-        f"Answer the question based on context:\nQuestion: {question}\nContext: {context}"
+        f"You are the student assistance and helping their query:\nQuestion: {question}\nContext: {context}"
     )
     return result[0]['generated_text']
 
