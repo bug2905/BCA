@@ -6,7 +6,7 @@ const interval = setInterval(() => {
   const distance = birthday - now;
 
   if (distance < 0) {
-    countdown.innerHTML = "🎉 It's Falguni's Birthday Today!";
+    countdown.innerHTML = "🎉 It's Your Birthday Today, Falguni 🌻";
     clearInterval(interval);
     return;
   }
