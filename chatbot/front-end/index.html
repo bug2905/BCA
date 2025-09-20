@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gujarat Vidyapith Chatbot</title>
+  <!-- Bootstrap CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Full-page background with blur */
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: url('gate-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Overlay to blur the background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      z-index: -1;
+    }
+    /* Top right corner small icon container */
+    .top-right-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+      cursor: default;
+      z-index: 10;
+    }
+    .top-right-icon img {
+      max-width: 70%;
+      max-height: 70%;
+      object-fit: contain;
+      user-select: none;
+    }
+    /* Main container for chatbot centered */
+    .chat-container {
+      max-width: 600px;
+      margin: 7vh auto 3vh auto;
+      background: rgba(255, 255, 245, 0.98);
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgb(0 0 0 / 0.3);
+      display: flex;
+      flex-direction: column;
+      height: 75vh;
+    }
+    /* Title area */
+    .chat-header {
+      padding: 20px 30px;
+      border-bottom: 2px solid #dbc985;
+      color: #b38f3b;
+      font-weight: 700;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background-color: #fffbeae6;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .chat-header svg {
+      fill: #b38f3b;
+      width: 24px;
+      height: 24px;
+    }
+    .chat-subtitle {
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #8c6e3c;
+      padding: 0 30px 15px 30px;
+      user-select: none;
+    }
+    /* Chat messages container - scrollable */
+    .chat-messages {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 15px 25px;
+      font-size: 0.9rem;
+      color: #4a4031;
+      position: relative;
+      background: transparent;
+    }
+    /* Individual message containers */
+    .message {
+      display: flex;
+      margin-bottom: 20px;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    /* Bot messages on left */
+    .message.bot {
+      justify-content: flex-start;
+    }
+    /* User messages on right */
+    .message.user {
+      justify-content: flex-end;
+    }
+    /* Bot message icon container */
+    .message.bot .icon-wrapper {
+      background-color: #f0e6c9;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #998755;
+      font-size: 18px;
+      user-select: none;
+      box-shadow: 0 0 6px #dbcb86aa;
+    }
+    /* User icon container */
+    .message.user .icon-wrapper {
+      background-color: #b7bfca;
+      border-radius: 15px 5px 5px 15px;
+      width: 35px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #37485b;
+      cursor: default;
+      user-select: none;
+      box-shadow: 0 0 6px #6688bbcc;
+    }
+    /* Message bubble styling */
+    .message-content {
+      max-width: 70%;
+      padding: 12px 18px;
+      border-radius: 18px;
+      position: relative;
+      box-shadow: 0 2px 11px rgb(0 0 0 / 0.08);
+      font-size: 0.90rem;
+      line-height: 1.4;
+    }
+    /* Bot bubble style */
+    .message.bot .message-content {
+      background-color: #d1c9bb88;
+      color: #4a4031;
+      border-top-left-radius: 3px;
+    }
+    /* User bubble style */
+    .message.user .message-content {
+      background-color: #163954dd;
+      color: #f8f9fa;
+      border-radius: 18px 3px 18px 18px;
+      text-transform: capitalize;
+    }
+    /* Timestamp for messages */
+    .timestamp {
+      display: block;
+      font-size: 0.75rem;
+      color: #6b6456cc;
+      margin-top: 6px;
+      text-align: right;
+      user-select: none;
+      font-family: monospace;
+    }
+    /* Input area container */
+    .chat-input-area {
+      display: flex;
+      align-items: center;
+      border-top: 1px solid #dbc885aa;
+      padding: 12px 25px;
+      background-color: #fffbeae6;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      gap: 10px;
+    }
+    /* Text input styling */
+    #chat-input {
+      flex: 1;
+      border-radius: 25px;
+      border: 1px solid #adb5bd;
+      padding: 9px 15px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s,
+        box-shadow 0.2s;
+      box-shadow: inset 0 0 2px #aaa6;
+    }
+    #chat-input:focus {
+      border-color: #b38f3b;
+      box-shadow: 0 0 8px #dbc885cc;
+    }
+    /* Send button styling */
+    #send-btn {
+      border: none;
+      background-color: #163954;
+      color: #f8f9fa;
+      padding: 10px 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.35);
+      user-select: none;
+    }
+    #send-btn:hover,
+    #send-btn:focus {
+      background-color: #b38f3b;
+      outline: none;
+    }
+    /* Footer small text below input */
+    .chat-footer-text {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #7f704bdd;
+      font-style: italic;
+      padding: 8px 0 12px;
+      user-select: none;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Scrollbar styling for chat messages */
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: #bfa96599;
+      border-radius: 8px;
+    }
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top right small icon container -->
+  <div class="top-right-icon" title="Gujarat Vidyapith Logo">
+    <!-- The PNG icon image provided -->
+    <img src="gv-seal.png" alt="University Logo" />
+  </div>
+
+  <!-- Central chat container -->
+  <main class="chat-container shadow">
+    <header class="chat-header" aria-label="Chatbot header">
+      <!-- Chat bubble icon (SVG) -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M21 6h-2v9H5v2h12v1l4-4-4-4v1zM3 3h12a2 2 0 0 1 2 2v7h-2V5H5v11h2v2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+        />
+      </svg>
+      Gujarat Vidyapith Chatbot
+    </header>
+    <p class="chat-subtitle">
+      Ask me anything about the university
+    </p>
+
+    <section class="chat-messages" id="chat-messages" aria-live="polite" aria-relevant="additions" tabindex="0">
+      <!-- Initial bot message -->
+      <article class="message bot" aria-label="Chatbot message">
+        <div class="icon-wrapper" aria-hidden="true" title="Chatbot icon">
+          <!-- Bot icon SVG as robot -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#998755" height="22" viewBox="0 0 24 24" width="22" aria-hidden="true" focusable="false"><path d="M20 9h-2V7c0-1.66-1.34-3-3-3h-6c-1.66 0-3 1.34-3 3v2H4c-1.11 0-2 .89-2 2v5c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2v-5c0-1.11-.89-2-2-2zM9 7h6v2H9V7zm9 9H6v-4h12v4z"/></svg>
+        </div>
+        <div class="message-content">
+          <p><strong>નમસ્તે!</strong> I am Gujarat Vidyapith Chatbot. How can I help you today?</p>
+          <time class="timestamp" datetime="">09:39 pm</time>
+        </div>
+      </article>
+    </section>
+
+    <form id="chat-form" class="chat-input-area" aria-label="Send message form">
+      <input
+        type="text"
+        id="chat-input"
+        name="chat-input"
+        autocomplete="off"
+        placeholder="Ask about admissions, courses, campus facilities..."
+        aria-label="Type your question here"
+        required
+        minlength="1"
+        maxlength="250"
+      />
+      <button type="submit" id="send-btn" aria-label="Send message" title="Send"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" height="20" viewBox="0 0 24 24" width="20"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+    </form>
+    <div class="chat-footer-text" aria-live="off">
+      Gujarat Vidyapith AI Assistant - Here to help with your queries
+    </div>
+  </main>
+
+  <script>
+    // JavaScript chatbot logic without external frameworks
+
+    const chatForm = document.getElementById("chat-form");
+    const chatInput = document.getElementById("chat-input");
+    const chatMessages = document.getElementById("chat-messages");
+
+    // Simple simulated bot answers for demonstration
+    const botReplies = {
+      hello: "Hello! How can I assist you with Gujarat Vidyapith today?",
+      admission:
+        "Admissions at Gujarat Vidyapith are open as per the notification on our official website.",
+      courses:
+        "Gujarat Vidyapith offers a variety of courses. Please specify which faculty or program you are interested in.",
+      campus:
+        "Our campus facilities include modern classrooms, library, sports grounds, and hostels with all amenities.",
+      default:
+        "Thank you for your question. I'm here to help with information about Gujarat Vidyapith admissions, courses, campus facilities, and other university-related queries.",
+    };
+
+    // Function to get current time formatted as hh:mm am/pm
+    function getCurrentTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      const ampm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12 || 12;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      return `${hours}:${minutes} ${ampm}`;
+    }
+
+    // Function to append message to chat
+    function appendMessage(sender, text) {
+      const messageEl = document.createElement("article");
+      messageEl.classList.add("message", sender);
+      messageEl.setAttribute("aria-label", sender === "bot" ? "Chatbot message" : "User message");
+
+      const iconWrapper = document.createElement("div");
+      iconWrapper.className = "icon-wrapper";
+      iconWrapper.setAttribute("aria-hidden", "true");
+
+      if (sender === "bot") {
+        // Bot robot SVG icon
+        iconWrapper.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="#998755" height="22" viewBox="0 0 24 24" width="22"><path d="M20 9h-2V7c0-1.66-1.34-3-3-3h-6c-1.66 0-3 1.34-3 3v2H4c-1.11 0-2 .89-2 2v5c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2v-5c0-1.11-.89-2-2-2zM9 7h6v2H9V7zm9 9H6v-4h12v4z"/></svg>';
+      } else {
+        // User icon (person) SVG
+        iconWrapper.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" fill="#37485b" height="24" viewBox="0 0 24 24" width="24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4 -4-4 -4 1.79 -4 4 1.79 4 4 4zm0 2c-2.67 0 -8 1.34 -8 4v2h16v-2c0-2.66 -5.33-4 -8-4z"/></svg>';
+      }
+
+      const messageContent = document.createElement("div");
+      messageContent.className = "message-content";
+      // Put the text inside a paragraph to separate text from timestamp
+      const para = document.createElement("p");
+      para.textContent = text;
+
+      const timeStamp = document.createElement("time");
+      timeStamp.className = "timestamp";
+      timeStamp.dateTime = new Date().toISOString();
+      timeStamp.textContent = getCurrentTime();
+
+      messageContent.appendChild(para);
+      messageContent.appendChild(timeStamp);
+
+      messageEl.appendChild(iconWrapper);
+      messageEl.appendChild(messageContent);
+
+      chatMessages.appendChild(messageEl);
+
+      // Scroll chat to the bottom to see latest message
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Basic logic to choose reply based on input key words
+    function getBotReply(message) {
+      const msgLower = message.toLowerCase();
+
+      if (msgLower.includes("hello") || msgLower.includes("hi") || msgLower.includes("namaste")) {
+        return botReplies.hello;
+      } else if (msgLower.includes("admission")) {
+        return botReplies.admission;
+      } else if (msgLower.includes("course")) {
+        return botReplies.courses;
+      } else if (msgLower.includes("campus") || msgLower.includes("facility")) {
+        return botReplies.campus;
+      } else {
+        return botReplies.default;
+      }
+    }
+
+    // Form submission event handler
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let userInput = chatInput.value.trim();
+      if (userInput.length === 0) return;
+
+      // Append user message to chat
+      appendMessage("user", userInput);
+
+      // Clear input after sending
+      chatInput.value = "";
+      chatInput.focus();
+
+      // Prepare bot reply with a small delay for realism
+      setTimeout(() => {
+        const reply = getBotReply(userInput);
+        appendMessage("bot", reply);
+      }, 800);
+    });
+
+    // Accessibility: Focus on chat messages container to read recent messages
+    window.onload = () => {
+      chatMessages.focus();
+    };
+  </script>
+</body>
+</html>
