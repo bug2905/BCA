@@ -1,4 +1,4 @@
 import pywhatkit
 
 #Send message at a specific time
-pywhatkit.sendwhatmsg("+916356311541", "Hello! This is an automated message.",9,59)
+pywhatkit.sendwhatmsg("+919408030206", "Hello! im kushal shah",16,7)
