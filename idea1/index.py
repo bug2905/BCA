@@ -68,26 +68,6 @@ topics = {
         "definition": "Read/write files using open() function.",
         "syntax": "f = open('file.txt','w')\nf.write('Hello')\nf.close()"
     },
-    "Modules & Packages": {
-        "definition": "Organize code into modules and packages.",
-        "syntax": "import math\nprint(math.sqrt(16))"
-    },
-    "Decorators": {
-        "definition": "Function that modifies another function.",
-        "syntax": "def decorator(func):\n    def wrapper():\n        print('Before')\n        func()\n        print('After')\n    return wrapper\n@decorator\ndef say():\n    print('Hello')\nsay()"
-    },
-    "Generators": {
-        "definition": "Function that yields values lazily using yield keyword.",
-        "syntax": "def gen():\n    for i in range(5):\n        yield i\nfor val in gen():\n    print(val)"
-    },
-    "List Comprehension": {
-        "definition": "Shorter way to create lists.",
-        "syntax": "squares = [x*x for x in range(5)]\nprint(squares)"
-    },
-    "Regular Expressions": {
-        "definition": "Pattern matching in strings using re module.",
-        "syntax": "import re\npattern = r'\\d+'\ntext = 'There are 12 cats'\nprint(re.findall(pattern,text))"
-    }
 }
 
 # Functions
@@ -98,10 +78,10 @@ def show_topic(topic):
     def_text.configure(state="disabled")
 
 def run_code():
-    code = code_editor.get("1.0","end")
+    code = code_editor.get("1.0", "end")
     output_text.configure(state="normal")
-    output_text.delete("1.0","end")
-    
+    output_text.delete("1.0", "end")
+
     old_stdout = sys.stdout
     redirected_output = sys.stdout = io.StringIO()
     try:
@@ -115,17 +95,29 @@ def run_code():
 
 def save_code():
     file_path = filedialog.asksaveasfilename(defaultextension=".py",
-                                             filetypes=[("Python Files","*.py"),("Text Files","*.txt")])
+                                             filetypes=[("Python Files", "*.py"), ("Text Files", "*.txt")])
     if file_path:
-        with open(file_path,"w",encoding="utf-8") as f:
-            f.write(code_editor.get("1.0","end"))
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(code_editor.get("1.0", "end"))
 
 def load_code():
-    file_path = filedialog.askopenfilename(filetypes=[("Python Files","*.py"),("Text Files","*.txt")])
+    file_path = filedialog.askopenfilename(filetypes=[("Python Files", "*.py"), ("Text Files", "*.txt")])
     if file_path:
-        with open(file_path,"r",encoding="utf-8") as f:
-            code_editor.delete("1.0","end")
-            code_editor.insert("end",f.read())
+        with open(file_path, "r", encoding="utf-8") as f:
+            code_editor.delete("1.0", "end")
+            code_editor.insert("end", f.read())
+
+# 🔍 SEARCH FILTER FUNCTION
+def filter_topics(search_text=""):
+    for widget in scrollable_frame.winfo_children():
+        widget.destroy()
+
+    search_text = search_text.lower()
+
+    for t in topics:
+        if search_text in t.lower():
+            ctk.CTkButton(scrollable_frame, text=t, command=lambda x=t: show_topic(x)).pack(fill="x", pady=2, padx=5)
+
 
 # App Window
 ctk.set_appearance_mode("dark")
@@ -142,31 +134,37 @@ root.grid_columnconfigure(1, weight=1)
 
 # --- Part 1: Topics (Top-left, Scrollable) ---
 frame1 = ctk.CTkFrame(root, corner_radius=15)
-frame1.grid(row=0,column=0, sticky="nsew", padx=10,pady=10)
+frame1.grid(row=0, column=0, sticky="nsew", padx=10, pady=10)
 
-ctk.CTkLabel(frame1, text="📚 Topics", font=("Arial",16,"bold")).pack(pady=5)
+ctk.CTkLabel(frame1, text="📚 Topics", font=("Arial", 16, "bold")).pack(pady=5)
+
+# 🔍 SEARCH BAR
+search_entry = ctk.CTkEntry(frame1, placeholder_text="Search topic...")
+search_entry.pack(fill="x", padx=10)
+search_entry.bind("<KeyRelease>", lambda event: filter_topics(search_entry.get()))
 
 scrollable_frame = ctk.CTkScrollableFrame(frame1)
 scrollable_frame.pack(fill="both", expand=True, padx=5, pady=5)
 
-for t in topics:
-    ctk.CTkButton(scrollable_frame, text=t, command=lambda x=t: show_topic(x)).pack(fill="x", pady=2, padx=5)
+filter_topics("")  # load all topics on start
 
 # --- Part 2: Definition + Syntax (Top-right) ---
 frame2 = ctk.CTkFrame(root, corner_radius=15)
-frame2.grid(row=0,column=1, sticky="nsew", padx=10,pady=10)
-ctk.CTkLabel(frame2, text="📖 Definition + Syntax", font=("Arial",16,"bold")).pack(pady=5)
+frame2.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
+ctk.CTkLabel(frame2, text="📖 Definition + Syntax", font=("Arial", 16, "bold")).pack(pady=5)
+
 def_text = ctk.CTkTextbox(frame2, wrap="word", height=15)
-def_text.pack(fill="both", expand=True, padx=10,pady=10)
+def_text.pack(fill="both", expand=True, padx=10, pady=10)
 def_text.insert("end", "Select a topic to view details...")
 def_text.configure(state="disabled")
 
 # --- Part 3: Code Editor (Bottom-left) ---
 frame3 = ctk.CTkFrame(root, corner_radius=15)
-frame3.grid(row=1,column=0, sticky="nsew", padx=10,pady=10)
-ctk.CTkLabel(frame3, text="💻 Code Editor", font=("Arial",16,"bold")).pack(pady=5)
+frame3.grid(row=1, column=0, sticky="nsew", padx=10, pady=10)
+ctk.CTkLabel(frame3, text="💻 Code Editor", font=("Arial", 16, "bold")).pack(pady=5)
+
 code_editor = ctk.CTkTextbox(frame3, wrap="word")
-code_editor.pack(fill="both", expand=True, padx=10,pady=5)
+code_editor.pack(fill="both", expand=True, padx=10, pady=5)
 
 btn_frame = ctk.CTkFrame(frame3)
 btn_frame.pack(pady=5)
@@ -176,10 +174,11 @@ ctk.CTkButton(btn_frame, text="▶ Run", command=run_code, width=80).pack(side="
 
 # --- Part 4: Output (Bottom-right) ---
 frame4 = ctk.CTkFrame(root, corner_radius=15)
-frame4.grid(row=1,column=1, sticky="nsew", padx=10,pady=10)
-ctk.CTkLabel(frame4, text="🖥 Output", font=("Arial",16,"bold")).pack(pady=5)
+frame4.grid(row=1, column=1, sticky="nsew", padx=10, pady=10)
+ctk.CTkLabel(frame4, text="🖥 Output", font=("Arial", 16, "bold")).pack(pady=5)
+
 output_text = ctk.CTkTextbox(frame4, wrap="word", fg_color="black", text_color="lime")
-output_text.pack(fill="both", expand=True, padx=10,pady=10)
+output_text.pack(fill="both", expand=True, padx=10, pady=10)
 output_text.insert("end", "Output will appear here...")
 output_text.configure(state="disabled")
 
