@@ -1,0 +1,14 @@
+pyttsx3
+SpeechRecognition
+pyaudio
+wikipedia
+pywhatkit
+opencv-python
+numpy
+requests
+pip install pipwin
+pipwin install pyaudio
+pip install SpeechRecognition
+datetime
+webbrowser
+os

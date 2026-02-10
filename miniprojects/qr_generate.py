@@ -1,8 +1,9 @@
 #generate a qr codecusing python
 import qrcode
-data = "kushal shah"
+data = "Ami mem"
 
-qr = qrcode.make(data)
+qr = qrcode.ma
+ke(data)
 qr.save(f"E:/kushal/git/BCA/miniprojects/{data}.png")
 
 print("qr code generated")

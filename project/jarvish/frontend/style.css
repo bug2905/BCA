@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  background: black;
+  color: cyan;
+  font-family: Arial;
+  overflow: hidden;
+}
+
+#container {
+  text-align: center;
+}
+
+canvas {
+  width: 100%;
+  height: 60vh;
+}
+
+button {
+  background: cyan;
+  color: black;
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: white;
+}
+
+.status {
+  margin: 10px;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.chat {
+  margin-top: 20px;
+}
