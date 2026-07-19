@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PURAVA — The Birthday Issue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0a0a0a;
+    --black-2: #131110;
+    --gold: #d4af37;
+    --gold-soft: #c9a86a;
+    --cream: #f3ecdd;
+    --wine: #5c1a24;
+    --line: rgba(212,175,55,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--cream);
+    font-family:'Jost',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--gold);color:var(--black);}
+
+  .grain{
+    position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .sparkle{position:fixed;inset:0;pointer-events:none;z-index:1;}
+  .sparkle span{
+    position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;
+    box-shadow:0 0 6px 1px var(--gold);animation:tw 4s ease-in-out infinite;
+  }
+  @keyframes tw{0%,100%{opacity:.15;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
+
+  .rule{border:none;border-top:1px solid var(--line);}
+
+  header.flag{
+    position:sticky;top:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 6vw;
+    background:rgba(10,10,10,0.85);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    font-family:'Jost';font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft);
+  }
+  header.flag .dot{color:var(--gold);}
+
+  /* ---------- COVER ---------- */
+  .cover{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:space-between;
+    padding:8vh 6vw 6vh;
+    position:relative;
+    background:
+      radial-gradient(circle at 50% 15%, rgba(212,175,55,0.10), transparent 55%),
+      var(--black);
+  }
+  .cover-top{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft);
+  }
+  .cover-top .issue{text-align:right;line-height:1.6;}
+
+  .masthead{
+    text-align:center;margin:4vh 0 2vh;
+  }
+  .masthead .eyebrow{
+    font-family:'Cormorant Garamond';font-style:italic;font-size:1.1rem;color:var(--gold-soft);
+    letter-spacing:.08em;
+  }
+  .masthead h1{
+    font-family:'Playfair Display',serif;font-weight:900;
+    font-size:clamp(4.5rem,15vw,11rem);
+    letter-spacing:.02em;
+    line-height:.95;
+    background:linear-gradient(180deg,#f4e6b8 0%,#d4af37 45%,#9c7a2e 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 4px 24px rgba(212,175,55,0.25));
+    opacity:0;transform:translateY(24px);
+    animation:rise 1.3s .2s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{to{opacity:1;transform:translateY(0);}}
+
+  .masthead .sub{
+    margin-top:1.2rem;font-family:'Jost';font-size:.85rem;letter-spacing:.35em;text-transform:uppercase;color:var(--cream);
+    opacity:.85;
+  }
+
+  .cover-lines{
+    display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;
+    margin-top:auto;flex-wrap:wrap;
+  }
+  .cover-lines .line{max-width:260px;font-family:'Cormorant Garamond';font-size:1.15rem;line-height:1.3;color:var(--cream);}
+  .cover-lines .line b{color:var(--gold);font-weight:600;}
+  .cover-photo-wrap{
+    position:absolute;right:6vw;top:22vh;bottom:14vh;left:6vw;
+    display:none;
+  }
+
+  .cover-frame{
+    margin:2rem auto 0;
+    width:min(340px,72vw);aspect-ratio:4/5;
+    border:1px solid var(--gold);
+    padding:10px;
+    position:relative;
+  }
+  .cover-frame::before,.cover-frame::after{
+    content:'';position:absolute;width:22px;height:22px;border:1px solid var(--gold);
+  }
+  .cover-frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+  .cover-frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+  .cover-frame img,.cover-frame .placeholder{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .placeholder{
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#161311,#0c0a09);
+    color:var(--gold-soft);font-family:'Cormorant Garamond';font-style:italic;font-size:1rem;text-align:center;
+    padding:1rem;
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{
+    padding:12vh 6vw;position:relative;
+  }
+  .kicker{
+    font-family:'Jost';font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-soft);
+    display:flex;align-items:center;gap:14px;margin-bottom:1.6rem;
+  }
+  .kicker::after{content:'';flex:1;height:1px;background:var(--line);}
+  .headline{
+    font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2.2rem,5vw,3.6rem);
+    color:var(--cream);max-width:800px;line-height:1.08;
+  }
+  .headline em{color:var(--gold);font-style:italic;font-weight:600;}
+
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .9s ease, transform .9s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------- EDITOR'S LETTER ---------- */
+  .letter{
+    display:grid;grid-template-columns:1fr;gap:3rem;
+  }
+  .letter-body{
+    font-family:'Cormorant Garamond';font-size:clamp(1.15rem,1.6vw,1.5rem);line-height:1.75;color:#eee3c6;
+    max-width:780px;
+  }
+  .letter-body .drop{
+    float:left;font-family:'Playfair Display';font-size:4.6rem;line-height:.8;padding:.1rem .4rem 0 0;color:var(--gold);
+  }
+  .sign{
+    margin-top:2rem;font-family:'Cormorant Garamond';font-style:italic;font-size:1.3rem;color:var(--gold-soft);
+  }
+
+  /* ---------- BY THE NUMBERS ---------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:0;border-top:1px solid var(--line);margin-top:2.5rem;
+  }
+  .stat{
+    padding:2.4rem 1.2rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    text-align:center;
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:'Playfair Display';font-weight:900;font-size:2.6rem;color:var(--gold);
+  }
+  .stat .lbl{
+    margin-top:.4rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream);opacity:.75;
+  }
+
+  /* ---------- FEATURE GALLERY ---------- */
+  .gallery{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.5rem;
+  }
+  .frame{
+    position:relative;aspect-ratio:3/4;border:1px solid var(--line);overflow:hidden;
+    background:linear-gradient(135deg,#161311,#0c0a09);
+  }
+  .frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
+  .frame:hover img{transform:scale(1.06);}
+  .frame .cap{
+    position:absolute;left:0;right:0;bottom:0;padding:.7rem .8rem;
+    font-family:'Cormorant Garamond';font-style:italic;font-size:.95rem;color:var(--gold-soft);
+    background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);
+  }
+  .frame .placeholder{font-size:.85rem;}
+  @media(max-width:720px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* ---------- WISHES / QUOTES ---------- */
+  .wishes{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem;margin-top:2.5rem;
+  }
+  .wish-card{
+    border:1px solid var(--line);padding:2rem 1.6rem;position:relative;
+  }
+  .wish-card .q{
+    position:absolute;top:-.6rem;left:1.2rem;font-family:'Playfair Display';font-size:3rem;color:var(--gold);background:var(--black);padding:0 .3rem;
+  }
+  .wish-card p{font-family:'Cormorant Garamond';font-size:1.15rem;line-height:1.6;color:#eee3c6;margin-top:.6rem;}
+  .wish-card .who{margin-top:1rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft);}
+
+  /* ---------- HOROSCOPE / DETAILS STRIP ---------- */
+  .strip{
+    display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);margin-top:2.5rem;
+  }
+  .strip .col{flex:1;min-width:200px;padding:2rem;border-right:1px solid var(--line);}
+  .strip .col:last-child{border-right:none;}
+  .strip h4{font-family:'Jost';font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:.7rem;}
+  .strip p{font-family:'Cormorant Garamond';font-size:1.1rem;color:#eee3c6;line-height:1.6;}
+
+  /* ---------- FINALE / BACK COVER ---------- */
+  .finale{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    padding:8vh 6vw;position:relative;
+  }
+  .finale .eyebrow{font-family:'Cormorant Garamond';font-style:italic;color:var(--gold-soft);font-size:1.2rem;margin-bottom:1rem;}
+  .finale h2{
+    font-family:'Playfair Display';font-weight:900;font-size:clamp(2.6rem,8vw,5.5rem);
+    background:linear-gradient(180deg,#f4e6b8,#d4af37 50%,#9c7a2e);
+    -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.05;
+  }
+  .finale .msg{
+    max-width:640px;margin:2rem auto 0;font-family:'Cormorant Garamond';font-size:1.3rem;line-height:1.7;color:#eee3c6;
+  }
+  .barcode{
+    margin-top:4rem;display:flex;align-items:center;gap:1rem;opacity:.7;
+  }
+  .barcode .bars{
+    width:110px;height:38px;
+    background:repeating-linear-gradient(90deg,var(--cream) 0 2px,transparent 2px 4px,var(--cream) 4px 5px, transparent 5px 8px, var(--cream) 8px 10px, transparent 10px 13px);
+  }
+  .barcode .price{font-family:'Jost';font-size:.75rem;letter-spacing:.1em;color:var(--gold-soft);}
+
+  footer{
+    text-align:center;padding:3rem 6vw;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#555;border-top:1px solid var(--line);
+  }
+
+  @media(max-width:600px){
+    .cover-top{flex-direction:column;gap:.6rem;}
+    .cover-top .issue{text-align:left;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="sparkle" id="sparkle"></div>
+
+<header class="flag">
+  <span>Purava <span class="dot">&middot;</span> The Birthday Issue</span>
+  <span>Est. Today</span>
+</header>
+
+<!-- ================= COVER ================= -->
+<section class="cover">
+  <div class="cover-top">
+    <span>Vol. I — No. 1</span>
+    <span class="issue">The Annual Celebration Issue<br>On Sale: Today Only</span>
+  </div>
+
+  <div class="masthead">
+    <div class="eyebrow">This month's cover star</div>
+    <h1>PURAVA</h1>
+    <div class="sub">The Birthday Issue &nbsp;·&nbsp; July 20 &nbsp;·&nbsp; Turning 19</div>
+  </div>
+
+  <div class="cover-frame">
+    <img src="images/cover.jpg" alt="Purava">
+  </div>
+
+  <div class="cover-lines">
+    <div class="line"><b>Inside:</b> a letter written just for her nineteenth year.</div>
+    <div class="line"><b>Feature:</b> six moments that tell her story so far.</div>
+    <div class="line"><b>Plus:</b> the numbers behind a year worth celebrating.</div>
+  </div>
+</section>
+
+<!-- ================= EDITOR'S LETTER ================= -->
+<section class="letter">
+  <div class="kicker">Editor's Letter</div>
+  <h2 class="headline reveal">A note before <em>the celebration</em> begins</h2>
+  <div class="letter-body reveal" style="margin-top:2rem;">
+    <span class="drop">D</span>ear Purava, every issue needs a reason to exist, and this one is simple: it's your day. We built these pages the way a magazine builds its best feature — around someone worth writing about. Edit this letter to say whatever you want her to read first. Talk about the year that's passed, the person she's become, or the memory that still makes you laugh when you think about it.
+    <br><br>
+    Whatever you write here, keep it in your own words — this is the one page she'll read twice.
+    <div class="sign">— With all our love</div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================= BY THE NUMBERS ================= -->
+<section>
+  <div class="kicker">By The Numbers</div>
+  <h2 class="headline reveal">Purava, <em>quantified</em></h2>
+  <div class="stats reveal">
+    <div class="stat"><div class="num">19</div><div class="lbl">Years of brilliance</div></div>
+    <div class="stat"><div class="num">1000+</div><div class="lbl">Reasons to smile</div></div>
+    <div class="stat"><div class="num">∞</div><div class="lbl">Inside jokes</div></div>
+    <div class="stat"><div class="num">#1</div><div class="lbl">Sister, ranked</div></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ================= FEATURE GALLERY ================= -->
+<section>
+  <div class="kicker">Feature — Life In Frames</div>
+  <h2 class="headline reveal">Six moments, <em>one story</em></h2>
+  <div class="gallery reveal">
+    <div class="frame"><img src="images/photo1.jpg" alt="Purava — moment one"></div>
+    <div class="frame"><img src="images/photo2.jpg" alt="Purava — moment two"></div>
+    <div class="frame"><img src="images/photo3.jpg" alt="Purava — moment three"></div>
+    <div class="frame"><img src="images/photo4.jpg" alt="Purava — moment four"></div>
+    <div class="frame"><img src="images/photo5.jpg" alt="Purava — moment five"></div>
+    <div class="frame"><img src="images/photo6.jpg" alt="Purava — moment six"></div>
+  </div>
+</section>
+
+<!-- ================= FINALE ================= -->
+<section class="finale">
+  <div class="eyebrow reveal">The Last Word</div>
+  <h2 class="reveal">Happy Birthday,<br>Purava.</h2>
+  <p class="msg reveal">May this year read like your best chapter yet — full of the people who love you, the moments worth framing, and everything still ahead. This issue was made for you, and only you.</p>
+  <div class="barcode reveal">
+    <div class="bars"></div>
+    <div class="price">Issue Price: Priceless</div>
+  </div>
+</section>
+
+<footer>Purava &middot; The Birthday Issue &middot; Printed With Love</footer>
+
+<script>
+  // sparkle stars
+  const sparkleEl = document.getElementById('sparkle');
+  for(let i=0;i<45;i++){
+    const s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*4)+'s';
+    s.style.animationDuration=(3+Math.random()*3)+'s';
+    sparkleEl.appendChild(s);
+  }
+
+  // scroll reveal
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
